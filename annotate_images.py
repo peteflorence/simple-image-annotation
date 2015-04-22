@@ -11,16 +11,16 @@ import csv
 
 # defaults
 
-IMAGE_START = 922 #694
+IMAGE_START = 1 #694
 
 
-IMAGE_DIR = '/home/abarry/rlg/stereo-compare-paper/data/2014-10-10-fpgaflight1/'
+IMAGE_DIR = '/Users/pflomacpro/RLG/simple-image-annotation/videofolder/'
 image_number = IMAGE_START
 
 
 def LoadImage(image_number):
 
-    filepath = IMAGE_DIR + "%d.png" % image_number
+    filepath = IMAGE_DIR + "videoframe%d.jpg" % image_number
 
     img = pygame.image.load(filepath)
 
