@@ -11,7 +11,8 @@ import csv
 
 # defaults
 
-IMAGE_START = 1 #694
+IMAGE_START = 1 
+IMAGE_END   = 75
 
 
 IMAGE_DIR = '/Users/pflomac/Desktop/Hack/ProjectWind/simple-image-annotation/images/'
@@ -176,6 +177,9 @@ print 'image_number, left, top, right, bottom' #label for the positions of the b
 
 while True:
     #input(pygame.event.get())
+
+    if image_number == IMAGE_END:
+        exit()
 
     for event in pygame.event.get():
         if event.type == QUIT:
