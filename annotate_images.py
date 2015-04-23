@@ -161,7 +161,7 @@ screen = pygame.display.get_surface()
 
 background = pygame.Surface(screen.get_size())
 background = background.convert()
-background.fill((250, 250, 250))
+background.fill((250, 250, 250)) # Where does background fill show up?
 
 screen.blit(background, (0, 0))
 pygame.display.flip()
@@ -172,7 +172,7 @@ boxes = AnnotationBoxes()
 
 pygame.key.set_repeat(50)
 
-print 'image_number, left, top, right, bottom'
+print 'image_number, left, top, right, bottom' #label for the positions of the boxes to be drawn
 
 while True:
     #input(pygame.event.get())
@@ -180,27 +180,31 @@ while True:
     for event in pygame.event.get():
         if event.type == QUIT:
             exit()
-        elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE or event.key == 113: # 113 = q
+        
+        # Keyboard interactions
+        elif event.type == KEYDOWN:  # If a button is pressed
+            if event.key == K_ESCAPE or event.key == 113: # Can press Esc or Q at any time to quit (113 = q)
                 exit()
-            elif event.key == K_RIGHT:
+            elif event.key == K_RIGHT: # Can press right arrow to move to next image
                 # skip this image
                 image_number = image_number + 1
                 img = LoadImage(image_number)
                 img = DrawLabel(img, image_number)
                 boxes.ResetBoxes()
 
-            elif event.key == K_LEFT:
+            elif event.key == K_LEFT: # Can press left arrow to move to previous image
                 image_number = image_number - 1
                 img = LoadImage(image_number)
                 img = DrawLabel(img, image_number)
                 boxes.ResetBoxes()
 
+        # Mouse interactions
         elif event.type == MOUSEBUTTONUP:
-            if event.button == 1:
+            
+            if event.button == 1: # Left click to draw
                 boxes.ProcessClick(event)
 
-            elif event.button == 3: # right click
+            elif event.button == 3: # Right click to print box locations, and move to next image
 
                     boxes.Finish(image_number)
 
@@ -228,6 +232,6 @@ while True:
     allsprites.draw(screen)
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(60) #What does the clock tick do?
 
 
