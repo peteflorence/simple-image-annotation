@@ -14,24 +14,26 @@ import csv
 IMAGE_START = 1 #694
 
 
-IMAGE_DIR = '/Users/pflomacpro/RLG/simple-image-annotation/videofolder/'
+IMAGE_DIR = '/Users/pflomac/Desktop/Hack/ProjectWind/simple-image-annotation/images/'
 image_number = IMAGE_START
 
 
 def LoadImage(image_number):
 
-    filepath = IMAGE_DIR + "videoframe%d.jpg" % image_number
+    filepath = IMAGE_DIR + "frame-%d.tif" % image_number
 
     img = pygame.image.load(filepath)
 
     return img
 
 def DrawLabel(img, image_number):
-    # draw the file number onto the image
-    myfont = pygame.font.SysFont("monospace", 15)
-    label = myfont.render(str(image_number), True, pygame.Color(0, 0, 0), pygame.Color(255, 255, 255))
+    # draw the frame number onto the image
+    myfont = pygame.font.SysFont("monospace", 15) # Font for image label
+    textfont = pygame.Color(0, 0, 0)  # black
+    backgroundfont = pygame.Color(255, 255, 255) # white
+    label = myfont.render(str(image_number), True, textfont, backgroundfont) # What does the second argument do?
 
-    img.blit(label, (258, 250))
+    img.blit(label, (25, 25)) # Position of the image label in the frame (currently NorthWest)
 
     return img
 
