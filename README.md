@@ -1,3 +1,3 @@
 Simple python / pygame script for annotating images.
 
-![screenshot](https://raw.github.com/andybarry/flight/master/ui/annotation/image_annotation_screenshot.png)
+![alt text](https://github.com/peteflorence/simple-image-annotation/blob/master/image_annotation_screenshot.png?raw=true "Logo Title Text 1")
