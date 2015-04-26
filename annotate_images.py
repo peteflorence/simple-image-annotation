@@ -30,15 +30,15 @@ def LoadImage(image_number):
 def DrawLabel(img, image_number):
     # draw the frame number onto the image
     myfont = pygame.font.SysFont("monospace", 15) # Font for image label
-    textfont = pygame.Color(0, 0, 0)  # black
+    textfontcolor = pygame.Color(0, 0, 0)  # black
     backgroundfont = pygame.Color(255, 255, 255) # white
-    label = myfont.render(str(image_number), True, textfont, backgroundfont) # What does the second argument do?
+    label = myfont.render(str(image_number), True, textfontcolor, backgroundfontcolor) # What does the second argument do?
 
     img.blit(label, (25, 25)) # Position of the image label in the frame (currently NorthWest)
 
     return img
 
-class AnnotationBox(pygame.sprite.Sprite):
+class AnnotationLine(pygame.sprite.Sprite):
 
     def __init__(self, pos):
         # Call the parent class (Sprite) constructor
@@ -54,7 +54,7 @@ class AnnotationBox(pygame.sprite.Sprite):
         self.click_x = pos[0]
         self.click_y = pos[1]
 
-        self.ResizeBox(pos)
+        self.ResizeLines(pos)
 
         self.visible = True
 
@@ -62,7 +62,7 @@ class AnnotationBox(pygame.sprite.Sprite):
         self.image = pygame.Surface([self.rect.width, self.rect.height], pygame.SRCALPHA)
         self.image.fill(pygame.Color(128, 128, 128, 128))
 
-    def ResizeBox(self, pos):
+    def ResizeLine(self, pos):
 
         if self.click_x < pos[0]:
 
@@ -82,65 +82,65 @@ class AnnotationBox(pygame.sprite.Sprite):
 
 
     def ProcessMouseMove(self, event):
-        # resize the box as the mouse moves
-        self.ResizeBox(event.pos)
+        # resize the lin as the mouse moves
+        self.ResizeLine(event.pos)
 
     def ProcessClick(self, event):
-        self.ResizeBox(event.pos)
+        self.ResizeLine(event.pos)
         self.visible = False
 
     def PrintState(self):
         print str(self.rect.left) + ', ' + str(self.rect.top) + ', ' + str(self.rect.right) + ', ' + str(self.rect.bottom)
 
 
-# this class holds multiple boxes so that we can define regions of the image
-# with multiple boxes
-class AnnotationBoxes():
+# this class holds multiple lines so that we can define regions of the image
+# with multiple lines
+class AnnotationLines():
 
     def __init__(self):
-        self.ResetBoxes()
+        self.ResetLines()
 
 
-    def ResetBoxes(self):
-        self.boxes = []
+    def ResetLines(self):
+        #self.lines = []
         self.number_of_clicks = 0
 
     def ProcessClick(self, event):
 
         if self.number_of_clicks % 2 == 0:
-            # create a new box
-            self.boxes.append(AnnotationBox(event.pos))
+            # create a new line
+            self.lines.append(AnnotationLine(event.pos))
 
         else:
 
-            # continue a box
-            self.boxes[-1].ProcessClick(event)
+            # continue a line
+            self.lines[-1].ProcessClick(event)
 
         self.number_of_clicks = self.number_of_clicks + 1
 
     def ProcessMouseMove(self, event):
         if self.number_of_clicks % 2 == 0:
-            # waiting for a new box
+            # waiting for a new lin
             pass
         else:
-            self.boxes[-1].ProcessMouseMove(event)
+            self.lines[-1].ProcessMouseMove(event)
 
 
     def Finish(self, image_number):
 
-        # print out all box data
+        # print out all line data
 
-        for box in self.boxes:
+        for line in self.lines:
             sys.stdout.write(str(image_number) + ', ')
-            box.PrintState()
+            line.PrintState()
 
         sys.stdout.flush()
 
-        self.ResetBoxes()
+        self.ResetLines()
 
     def AddAllSprites(self, allsprites):
-        for box in self.boxes:
-            allsprites.add(box)
+        for line in self.lines:
+            allsprites.add(line)
 
         return allsprites
 
@@ -169,11 +169,11 @@ pygame.display.flip()
 
 clock = pygame.time.Clock()
 
-boxes = AnnotationBoxes()
+lines = AnnotationLines()
 
 pygame.key.set_repeat(50)
 
-print 'image_number, left, top, right, bottom' #label for the positions of the boxes to be drawn
+print 'image_number, left, top, right, bottom' #label for the positions of the lines to be drawn
 
 while True:
     #input(pygame.event.get())
@@ -194,23 +194,23 @@ while True:
                 image_number = image_number + 1
                 img = LoadImage(image_number)
                 img = DrawLabel(img, image_number)
-                boxes.ResetBoxes()
+                lines.ResetLines()
 
             elif event.key == K_LEFT: # Can press left arrow to move to previous image
                 image_number = image_number - 1
                 img = LoadImage(image_number)
                 img = DrawLabel(img, image_number)
-                boxes.ResetBoxes()
+                lines.ResetLines()
 
         # Mouse interactions
         elif event.type == MOUSEBUTTONUP:
             
             if event.button == 1: # Left click to draw
-                boxes.ProcessClick(event)
+                lines.ProcessClick(event)
 
-            elif event.button == 3: # Right click to print box locations, and move to next image
+            elif event.button == 3: # Right click to print lin locations, and move to next image
 
-                    boxes.Finish(image_number)
+                    lines.Finish(image_number)
 
                     # load a new image
                     image_number = image_number + 1
@@ -218,7 +218,7 @@ while True:
                     img = DrawLabel(img, image_number)
 
         elif event.type == MOUSEMOTION:
-            boxes.ProcessMouseMove(event)
+            lines.ProcessMouseMove(event)
 
 
 
@@ -230,7 +230,7 @@ while True:
     screen.blit(img, img.get_rect())
 
     allsprites = pygame.sprite.Group()
-    allsprites = boxes.AddAllSprites(allsprites)
+    allsprites = lines.AddAllSprites(allsprites)
     allsprites.update()
 
     allsprites.draw(screen)
