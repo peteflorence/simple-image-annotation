@@ -12,16 +12,16 @@ import csv
 # defaults
 
 IMAGE_START = 1 
-IMAGE_END   = 75
+IMAGE_END   = 10000
 
 
-IMAGE_DIR = '/Users/pflomac/Desktop/Hack/ProjectWind/simple-image-annotation/images/'
+IMAGE_DIR = '/Users/pflomacpro/Desktop/Test/videofolder/'
 image_number = IMAGE_START
 
 
 def LoadImage(image_number):
 
-    filepath = IMAGE_DIR + "frame-%d.tif" % image_number
+    filepath = IMAGE_DIR + "videoframe%d.jpg" % image_number
 
     img = pygame.image.load(filepath)
 
@@ -31,7 +31,7 @@ def DrawLabel(img, image_number):
     # draw the frame number onto the image
     myfont = pygame.font.SysFont("monospace", 15) # Font for image label
     textfontcolor = pygame.Color(0, 0, 0)  # black
-    backgroundfont = pygame.Color(255, 255, 255) # white
+    backgroundfontcolor = pygame.Color(255, 255, 255) # white
     label = myfont.render(str(image_number), True, textfontcolor, backgroundfontcolor) # What does the second argument do?
 
     img.blit(label, (25, 25)) # Position of the image label in the frame (currently NorthWest)
@@ -54,7 +54,7 @@ class AnnotationLine(pygame.sprite.Sprite):
         self.click_x = pos[0]
         self.click_y = pos[1]
 
-        self.ResizeLines(pos)
+        self.ResizeLine(pos)
 
         self.visible = True
 
@@ -102,7 +102,7 @@ class AnnotationLines():
 
 
     def ResetLines(self):
-        #self.lines = []
+        self.lines = []
         self.number_of_clicks = 0
 
     def ProcessClick(self, event):
