@@ -11,17 +11,17 @@ import csv
 
 # defaults
 
-IMAGE_START = 1 
-IMAGE_END   = 10000
+IMAGE_START = 200 
+IMAGE_END   = 450
 
 
-IMAGE_DIR = '/Users/pflomacpro/Desktop/Test/videofolder/'
+IMAGE_DIR = '/Users/pflomacpro/ProjectWind/ImageProcessing/out_imagefolder/'
 image_number = IMAGE_START
 
 
 def LoadImage(image_number):
 
-    filepath = IMAGE_DIR + "videoframe%d.jpg" % image_number
+    filepath = IMAGE_DIR + "UDvideoframe%d.bmp" % image_number
 
     img = pygame.image.load(filepath)
 
@@ -57,6 +57,7 @@ class AnnotationLine(pygame.sprite.Sprite):
         self.ResizeLine(pos)
 
         self.visible = True
+        self.imgnumber = image_number
 
     def update(self):
         self.image = pygame.Surface([self.rect.width, self.rect.height], pygame.SRCALPHA)
@@ -98,11 +99,14 @@ class AnnotationLine(pygame.sprite.Sprite):
 class AnnotationLines():
 
     def __init__(self):
-        self.ResetLines()
+        self.InitLines()
 
+    def InitLines(self):
+        self.lines = []
+        self.number_of_clicks = 0    
 
     def ResetLines(self):
-        self.lines = []
+        #print(self.lines)
         self.number_of_clicks = 0
 
     def ProcessClick(self, event):
@@ -138,9 +142,10 @@ class AnnotationLines():
 
         self.ResetLines()
 
-    def AddAllSprites(self, allsprites):
+    def AddCurrentSprites(self, allsprites, image_number):
         for line in self.lines:
-            allsprites.add(line)
+            if line.imgnumber == image_number:
+                allsprites.add(line)
 
         return allsprites
 
@@ -230,7 +235,7 @@ while True:
     screen.blit(img, img.get_rect())
 
     allsprites = pygame.sprite.Group()
-    allsprites = lines.AddAllSprites(allsprites)
+    allsprites = lines.AddCurrentSprites(allsprites,image_number)
     allsprites.update()
 
     allsprites.draw(screen)
