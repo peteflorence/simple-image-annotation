@@ -18,6 +18,8 @@ IMAGE_END   = 450
 IMAGE_DIR = '/Users/pflomacpro/ProjectWind/ImageProcessing/out_imagefolder/'
 image_number = IMAGE_START
 
+displayallsprites = False
+
 
 def LoadImage(image_number):
 
@@ -45,7 +47,7 @@ class AnnotationLine(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface([100, 100], SRCALPHA)
-        pygame.draw.rect(self.image, pygame.Color(128, 128, 128), self.image.get_rect(), 3)
+        pygame.draw.rect(self.image, pygame.Color(128, 0, 0, 128), self.image.get_rect(), 3)
 
         self.image.convert_alpha()
 
@@ -61,17 +63,21 @@ class AnnotationLine(pygame.sprite.Sprite):
 
     def update(self):
         self.image = pygame.Surface([self.rect.width, self.rect.height], pygame.SRCALPHA)
-        self.image.fill(pygame.Color(128, 128, 128, 128))
+        self.image.fill(pygame.Color(128, 0, 0, 128))
 
     def ResizeLine(self, pos):
 
-        if self.click_x < pos[0]:
+        ## These two lines to draw vertical line
+        self.rect.left = self.click_x - 3
+        self.rect.width = 6
 
-            self.rect.width = pos[0] - self.click_x
-
-        else:
-            self.rect.left = pos[0]
-            self.rect.width = self.click_x - pos[0]
+        ## These next six lines to draw a box
+        #if self.click_x < pos[0]:
+        #
+        #    self.rect.width = pos[0] - self.click_x
+        #else:
+        #    self.rect.left = pos[0]
+        #    self.rect.width = self.click_x - pos[0]
 
         if self.click_y < pos[1]:
 
@@ -112,13 +118,26 @@ class AnnotationLines():
     def ProcessClick(self, event):
 
         if self.number_of_clicks % 2 == 0:
+            
+            for i in range(len(self.lines)):
+                line = self.lines[i]
+                if line.imgnumber == image_number:
+                    print('Already have a box for this img')
+                    #self.lines.pop(i)
+                    #self.lines.insert(i,AnnotationLine(event.pos))
+                    self.lines[i] = AnnotationLine(event.pos)
+                    break
             # create a new line
-            self.lines.append(AnnotationLine(event.pos))
+            else: 
+                print('Now Im creating a new box')
+                self.lines.append(AnnotationLine(event.pos))
 
         else:
-
-            # continue a line
-            self.lines[-1].ProcessClick(event)
+            for i in range(len(self.lines)):
+                line = self.lines[i]
+                if line.imgnumber == image_number:
+                    line.ProcessClick(event)
+                    break
 
         self.number_of_clicks = self.number_of_clicks + 1
 
@@ -127,7 +146,11 @@ class AnnotationLines():
             # waiting for a new lin
             pass
         else:
-            self.lines[-1].ProcessMouseMove(event)
+            for i in range(len(self.lines)):
+                line = self.lines[i]
+                if line.imgnumber == image_number:
+                    line.ProcessClick(event)
+                    break
 
 
     def Finish(self, image_number):
@@ -135,7 +158,7 @@ class AnnotationLines():
         # print out all line data
 
         for line in self.lines:
-            sys.stdout.write(str(image_number) + ', ')
+            sys.stdout.write(str(line.imgnumber) + ', ')
             line.PrintState()
 
         sys.stdout.flush()
@@ -146,6 +169,12 @@ class AnnotationLines():
         for line in self.lines:
             if line.imgnumber == image_number:
                 allsprites.add(line)
+
+        return allsprites
+
+    def AddAllSprites(self, allsprites):
+        for line in self.lines:
+            allsprites.add(line)
 
         return allsprites
 
@@ -207,6 +236,9 @@ while True:
                 img = DrawLabel(img, image_number)
                 lines.ResetLines()
 
+            elif event.key == K_SPACE:
+                displayallsprites = not(displayallsprites)
+
         # Mouse interactions
         elif event.type == MOUSEBUTTONUP:
             
@@ -225,6 +257,8 @@ while True:
         elif event.type == MOUSEMOTION:
             lines.ProcessMouseMove(event)
 
+        
+
 
 
     background.fill(BG_COLOR)
@@ -235,7 +269,10 @@ while True:
     screen.blit(img, img.get_rect())
 
     allsprites = pygame.sprite.Group()
-    allsprites = lines.AddCurrentSprites(allsprites,image_number)
+    if displayallsprites:
+        allsprites = lines.AddAllSprites(allsprites)
+    else:
+        allsprites = lines.AddCurrentSprites(allsprites,image_number)
     allsprites.update()
 
     allsprites.draw(screen)
