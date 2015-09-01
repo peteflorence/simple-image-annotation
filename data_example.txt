@@ -1,0 +1,50 @@
+image_number, left, top, right, bottom
+Now Im creating a new box
+2, 943, 332, 949, 404
+Now Im creating a new box
+2, 943, 332, 949, 404
+3, 1029, 334, 1035, 394
+Now Im creating a new box
+2, 943, 332, 949, 404
+3, 1029, 334, 1035, 394
+4, 1007, 327, 1013, 395
+Now Im creating a new box
+Now Im creating a new box
+2, 943, 332, 949, 404
+3, 1029, 334, 1035, 394
+4, 1007, 327, 1013, 395
+5, 964, 324, 970, 398
+6, 958, 322, 964, 403
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+Now Im creating a new box
+2, 943, 332, 949, 404
+3, 1029, 334, 1035, 394
+4, 1007, 327, 1013, 395
+5, 964, 324, 970, 398
+6, 958, 322, 964, 403
+7, 921, 325, 927, 406
+8, 901, 347, 907, 407
+9, 889, 335, 895, 427
+10, 873, 348, 879, 406
+11, 852, 367, 858, 411
+12, 816, 360, 822, 419
+13, 779, 371, 785, 431
+14, 744, 359, 750, 417
+15, 717, 357, 723, 414
+16, 689, 372, 695, 423
+17, 671, 372, 677, 409
+18, 648, 360, 654, 404
+19, 621, 362, 627, 406
+20, 597, 359, 603, 414

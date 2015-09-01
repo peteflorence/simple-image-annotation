@@ -11,11 +11,11 @@ import csv
 
 # defaults
 
-IMAGE_START = 200 
-IMAGE_END   = 450
+IMAGE_START = 1
+IMAGE_END   = 700
 
 
-IMAGE_DIR = '/Users/pflomacpro/ProjectWind/ImageProcessing/out_imagefolder/'
+IMAGE_DIR = '/Users/pflomacpro/RLG/Data/15-09-01/Strength4/out_imagefolder/'
 image_number = IMAGE_START
 
 displayallsprites = False
@@ -122,14 +122,14 @@ class AnnotationLines():
             for i in range(len(self.lines)):
                 line = self.lines[i]
                 if line.imgnumber == image_number:
-                    print('Already have a box for this img')
+                    #print('Already have a box for this img')
                     #self.lines.pop(i)
                     #self.lines.insert(i,AnnotationLine(event.pos))
                     self.lines[i] = AnnotationLine(event.pos)
                     break
             # create a new line
             else: 
-                print('Now Im creating a new box')
+                #print('Now Im creating a new box')
                 self.lines.append(AnnotationLine(event.pos))
 
         else:
@@ -207,7 +207,7 @@ lines = AnnotationLines()
 
 pygame.key.set_repeat(50)
 
-print 'image_number, left, top, right, bottom' #label for the positions of the lines to be drawn
+#print 'image_number, left, top, right, bottom' #label for the positions of the lines to be drawn
 
 while True:
     #input(pygame.event.get())
